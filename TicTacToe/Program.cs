@@ -39,7 +39,6 @@ namespace TicTacToeFTP
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Fehler beim Download: " + ex.Message);
                 return null;
             }
         }
@@ -210,6 +209,7 @@ namespace TicTacToeFTP
                     Console.WriteLine("Lobby konnte nicht erstellt werden.");
                     return;
                 }
+                Console.Clear();
                 Console.WriteLine("Lobby erstellt. Warte auf zweiten Spieler...");
 
                 // Warten, bis ein zweiter Spieler beitritt
@@ -256,7 +256,8 @@ namespace TicTacToeFTP
                     content = DownloadGameState(ftpServerUrl, lobbyName, ftpUser, ftpPass);
                     if (string.IsNullOrWhiteSpace(content))
                     {
-                        Console.WriteLine("Datei nicht gefunden, versuche erneut in 3 Sekunden...");
+                        Console.Clear();
+                        Console.WriteLine("Lobby nicht gefunden, versuche erneut in 3 Sekunden...");
                         Thread.Sleep(3000);
                         retryCount++;
                     }
@@ -312,6 +313,7 @@ namespace TicTacToeFTP
             // Spielschleife
             while (gameState.Status == "ongoing")
             {
+                Console.Clear();
                 string content = DownloadGameState(ftpServerUrl, lobbyName, ftpUser, ftpPass);
                 if (string.IsNullOrWhiteSpace(content))
                 {
@@ -394,7 +396,9 @@ namespace TicTacToeFTP
                                 string updatedJson = JsonSerializer.Serialize(gameState);
                                 if (!UploadGameState(ftpServerUrl, lobbyName, ftpUser, ftpPass, updatedJson))
                                 {
+                                    
                                     Console.WriteLine("Fehler beim Aktualisieren des Spiels. Versuche es erneut...");
+                                    Console.Clear();
                                     continue;
                                 }
                             }
