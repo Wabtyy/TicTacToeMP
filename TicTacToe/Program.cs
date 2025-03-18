@@ -98,16 +98,39 @@ namespace TicTacToeFTP
         static void DisplayBoard(string[] board)
         {
             Console.Clear();
-            Console.WriteLine("Tic Tac Toe");
+            Console.WriteLine("     🎮  TIC TAC TOE 🎮  ");
             Console.WriteLine();
-            for (int i = 0; i < 3; i++)
+
+            // Unicode-Art für X, O und leere Felder (5x4 Format)
+            string[,] symbols = {
+        { " █   █ ", "  █ █  ", "   █   ", "  █ █  ", " █   █ " }, // X
+        { "  ░██░ ", " █  █  ", " █  █  ", " █  █  ", "  ░██░ " }, // O
+        { "       ", "       ", "       ", "       ", "       " }  // Leerfeld
+    };
+
+            for (int row = 0; row < 3; row++)
             {
-                Console.WriteLine(" {0} | {1} | {2} ", board[i * 3], board[i * 3 + 1], board[i * 3 + 2]);
-                if (i < 2)
-                    Console.WriteLine("---+---+---");
+                for (int line = 0; line < 5; line++) // 5 Zeilen pro Zeichen
+                {
+                    for (int col = 0; col < 3; col++)
+                    {
+                        string symbol = board[row * 3 + col] == "X" ? symbols[0, line] :
+                                        board[row * 3 + col] == "O" ? symbols[1, line] :
+                                        symbols[2, line];
+
+                        Console.Write(" " + symbol + " "); // Abstand für Symmetrie
+                        if (col < 2) Console.Write("┃"); // Vertikale Trennung
+                    }
+                    Console.WriteLine();
+                }
+                if (row < 2)
+                {
+                    Console.WriteLine("─────────┼─────────┼───────"); // Horizontale Trennung
+                }
             }
             Console.WriteLine();
         }
+
 
         // Prüft, ob der gegebene Symbol (X oder O) eine Gewinnkombination hat
         static bool CheckWin(string[] board, string symbol)
